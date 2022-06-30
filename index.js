@@ -1,6 +1,8 @@
 const express = require('express');
 const path = require('path');
 const { default: mongoose } = require('mongoose');
+const indexRoute = require('./routes/index.route');
+const userRoute = require('./routes/user.route');
 
 const app = express();
 
@@ -21,9 +23,10 @@ connection.once('open', () => {
     console.log("MongoDB database connection established successfully");
 })
 
-const indexRoute = require('./routes/index.route');
+
 
 app.use('/', indexRoute);
+app.use('/user', userRoute);
 
 app.use(cors());
 
