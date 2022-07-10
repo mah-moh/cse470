@@ -20,6 +20,19 @@ export default function SignUp() {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     
+    const _data = {
+      first_name: data.get('firstName'),
+      last_name: data.get('lastName'),
+      email: data.get('email'),
+      password: data.get('password')
+    }
+
+    fetch('http://localhost:9000/user/add', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(_data),
+    })
+
   };
 
   return (

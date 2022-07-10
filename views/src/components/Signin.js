@@ -16,13 +16,27 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 const theme = createTheme();
 
 export default function SignIn() {
+  const auth = (data) => {
+
+  }
+
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
+    
+    fetch('http://localhost:9000/user/varify', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: data.get('email') }),
+    })
+    .then(res => res.json())
+    .then(resultData => {
+      if (auth(resultData)) {
+
+      }
+    })
+    .catch(err => console.log(err))
+
   };
 
   return (
