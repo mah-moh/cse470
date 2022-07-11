@@ -12,12 +12,39 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import bcrypt from 'bcryptjs';
+import AlertComponent from './alert';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const theme = createTheme();
 
 export default function SignIn() {
-  const auth = (data) => {
 
+  const [incorrect, setIncorrect] = useState();
+
+  const [id, setId] = useState([]);
+
+  const [redirect, setRedirect] = useState(false);
+
+  const navigate = useNavigate();
+
+  React.useEffect(() => {
+    localStorage.setItem('userId', JSON.stringify(id));
+  }, [id]);
+
+  React.useEffect(() => {
+    if(redirect) {
+      navigate('/')
+    }
+  }, [redirect]);
+
+  const auth = (resultData, data) => {
+    if (bcrypt.compareSync(data.get('password'), resultData.password)) {
+      return true;
+    } else {
+      setIncorrect(<AlertComponent text="Incorrect email or password." />)
+    }
   }
 
   const handleSubmit = (event) => {
@@ -31,8 +58,9 @@ export default function SignIn() {
     })
     .then(res => res.json())
     .then(resultData => {
-      if (auth(resultData)) {
-
+      if (auth(resultData, data)){
+        setId(resultData._id)
+        setRedirect(true)
       }
     })
     .catch(err => console.log(err))
@@ -57,7 +85,9 @@ export default function SignIn() {
           <Typography component="h1" variant="h5">
             Sign in
           </Typography>
+          
           <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+            {incorrect}
             <TextField
               margin="normal"
               required
@@ -78,6 +108,7 @@ export default function SignIn() {
               id="password"
               autoComplete="current-password"
             />
+            
             <FormControlLabel
               control={<Checkbox value="remember" color="primary" />}
               label="Remember me"

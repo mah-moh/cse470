@@ -6,13 +6,13 @@ module.exports = {
             firstname : req.body.first_name,
             lastname : req.body.last_name,
             email : req.body.email,
-            password : req.body.password,
+            password : req.body.hashed_password,
         });
         userDetails.save((err, doc) => {
             if (!err) {
-                res.redirect('/');
+                res.status(200).json(doc);
             }else {
-                console.log('Error during record insertion')
+                res.status(500).json({message: "An user exist with that email!"})
             }
         })
     },
