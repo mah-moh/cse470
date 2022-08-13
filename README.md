@@ -1,1 +1,2 @@
-# cse470
+# Chalkduster
+A collaborative online whiteboard.
