@@ -6,4 +6,8 @@ router.post("/add", controller.createUser);
 
 router.post("/varify", controller.varifyUser);
 
+router.post("/getuser", controller.getUser);
+
+router.patch("/:id", controller.updateUrl);
+
 module.exports = router;

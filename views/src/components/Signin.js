@@ -17,6 +17,7 @@ import AlertComponent from './alert';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+
 const theme = createTheme();
 
 export default function SignIn() {
@@ -54,7 +55,7 @@ export default function SignIn() {
     fetch('http://localhost:9000/user/varify', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email: data.get('email') }),
+      body: JSON.stringify({ email: data.get('email')}),
     })
     .then(res => res.json())
     .then(resultData => {
@@ -64,7 +65,6 @@ export default function SignIn() {
       }
     })
     .catch(err => console.log(err))
-
   };
 
   return (

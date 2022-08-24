@@ -4,6 +4,8 @@ const { default: mongoose } = require('mongoose');
 const indexRoute = require('./routes/index.route');
 const userRoute = require('./routes/user.route');
 const body_parser = require('body-parser');
+const http = require('http');
+const socket = require('socket.io');
 
 const app = express();
 
@@ -33,6 +35,17 @@ db.once('open', () => {
 
 app.use('/', indexRoute);
 app.use('/user', userRoute);
+
+const server = http.createServer(app);
+const io = socket(server);
+
+
+function onConnection(socket){
+    console.log("New client connected");
+    socket.on('drawing', (data) => socket.broadcast.emit('drawing', data));
+}
+
+io.on('connection', onConnection);
 
 
 app.listen(port, () => {
